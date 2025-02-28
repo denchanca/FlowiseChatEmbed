@@ -1,5 +1,5 @@
 import { FeedbackRatingType } from '@/queries/sendMessageQuery';
-import { BotMessageTheme, FooterTheme, TextInputTheme, UserMessageTheme, FeedbackTheme, DisclaimerPopUpTheme } from '@/features/bubble/types';
+import { BotMessageTheme, FooterTheme, TextInputTheme, UserMessageTheme, FeedbackTheme, DisclaimerPopUpTheme, DateTimeToggleTheme } from '@/features/bubble/types';
 import { FilePreview } from '@/components/inputs/textInput/components/FilePreview';
 export type FileEvent<T = EventTarget> = {
     target: T;
@@ -17,7 +17,7 @@ export type UploadsConfig = {
     fileUploadSizeAndTypes: IUploadConstraits[];
     isImageUploadAllowed: boolean;
     isSpeechToTextEnabled: boolean;
-    isFileUploadAllowed: boolean;
+    isRAGFileUploadAllowed: boolean;
 };
 type FilePreviewData = string | ArrayBuffer;
 type FilePreview = {
@@ -63,6 +63,8 @@ export type MessageType = {
     action?: IAction | null;
     rating?: FeedbackRatingType;
     id?: string;
+    followUpPrompts?: string;
+    dateTime?: string;
 };
 type observerConfigType = (accessor: string | boolean | object | MessageType[]) => void;
 export type observersConfigType = Record<'observeUserInput' | 'observeLoading' | 'observeMessages', observerConfigType>;
@@ -85,15 +87,22 @@ export type BotProps = {
     showAgentMessages?: boolean;
     title?: string;
     titleAvatarSrc?: string;
+    titleTextColor?: string;
+    titleBackgroundColor?: string;
     fontSize?: number;
     isFullPage?: boolean;
     footer?: FooterTheme;
     sourceDocsTitle?: string;
     observersConfig?: observersConfigType;
-    starterPrompts?: string[];
+    starterPrompts?: string[] | Record<string, {
+        prompt: string;
+    }>;
     starterPromptFontSize?: number;
     clearChatOnReload?: boolean;
     disclaimer?: DisclaimerPopUpTheme;
+    dateTimeToggle?: DateTimeToggleTheme;
+    renderHTML?: boolean;
+    closeBot?: () => void;
 };
 export type LeadsConfig = {
     status: boolean;
